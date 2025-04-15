@@ -1,6 +1,6 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import * as mcutil from 'minecraft-server-util';
-import { db } from '../server/db';
+import { db } from '../api/db';
 import { playerPeaks, serverRules, serverFeatures, galleryImages, newsPosts } from '../shared/schema';
 import { eq, desc, sql } from 'drizzle-orm';
 
