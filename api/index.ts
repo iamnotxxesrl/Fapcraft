@@ -57,7 +57,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
 // API route handlers
 async function handleServerStatus(_req: VercelRequest, res: VercelResponse) {
-  const SERVER_ADDRESS = "fapcraft.sdlf.fun";
+  const SERVER_ADDRESS = "mc.hypixel.net";
   const options = {
     timeout: 5000, // 5 seconds timeout
   };
