@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Test CORS for Minecraft Server Status API</title>
   <style>
     body {
@@ -56,12 +58,28 @@
       
       try {
         // Use window.location.origin to get the current server's URL
-        // This works when the test file is served by the same server as the API
-        const apiUrl = `${window.location.origin}/api/status`;
+        const apiUrl = `${window.location.origin}/api/status`; // Modify this if the API is on a different server
         console.log(`Fetching from: ${apiUrl}`);
-        const response = await fetch(apiUrl);
-        const data = await response.json();
         
+        const response = await fetch(apiUrl);
+
+        // If the response is not ok, throw an error
+        if (!response.ok) {
+          throw new Error(`Server returned ${response.status}`);
+        }
+
+        const text = await response.text(); // Get response as text first
+        console.log('Raw response:', text);
+
+        // Check if the response is valid JSON
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (jsonError) {
+          throw new Error('Invalid JSON response');
+        }
+
+        // Handle server status
         let statusClass = data.status === 'offline' || data.online === 0 ? 'offline' : 'online';
         
         let html = `
@@ -76,6 +94,7 @@
         
         statusOutput.innerHTML = html;
       } catch (error) {
+        console.error('Error:', error);
         statusOutput.innerHTML = `
           <p class="offline">Error: ${error.message}</p>
           <p>This could indicate a CORS issue or that the server is not running.</p>
